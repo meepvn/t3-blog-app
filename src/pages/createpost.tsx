@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
+
 type Input = {
   title: string;
   content: string;
@@ -16,15 +16,10 @@ const initialInput = {
 
 const CreatePost = () => {
   const { data: sessionData, status } = useSession();
-  const router = useRouter();
   const [input, setInput] = useState<Input>({ ...initialInput });
 
   const { mutate: createPost } = api.post.addPost.useMutation();
   if (status === "loading") return <div>Loading ...</div>;
-  if (status === "unauthenticated") {
-    router.push("/");
-    return;
-  }
 
   return (
     <>
