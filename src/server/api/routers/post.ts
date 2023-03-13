@@ -11,6 +11,11 @@ export const postRouter = createTRPCRouter({
             image: true,
           },
         },
+        tags: {
+          select: {
+            title: true,
+          },
+        },
       },
     })
   ),
@@ -26,6 +31,11 @@ export const postRouter = createTRPCRouter({
             name: true,
           },
         },
+        tags: {
+          select: {
+            title: true,
+          },
+        },
       },
     })
   ),
@@ -34,16 +44,24 @@ export const postRouter = createTRPCRouter({
       z.object({
         content: z.string(),
         title: z.string(),
+        tags: z.array(z.string()),
       })
     )
     .mutation(({ ctx, input }) => {
-      if (!ctx.session?.user.id) return null;
       const userId = ctx.session?.user.id;
+      const _tags = input.tags.map((tag) => {
+        return {
+          id: tag,
+        };
+      });
       return ctx.prisma.post.create({
         data: {
           content: input.content,
           title: input.title,
           userId,
+          tags: {
+            connect: _tags,
+          },
         },
       });
     }),
