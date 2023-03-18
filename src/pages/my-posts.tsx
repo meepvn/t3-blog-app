@@ -40,7 +40,7 @@ export default function MyPosts({ sessionData }: { sessionData: Session }) {
             alt=""
             className="w-24 cursor-pointer rounded-full"
           />
-          <p className="text-5xl">{sessionData.user.name}'s posts</p>
+          <p className="text-5xl">{sessionData.user.name}&apos;s posts</p>
         </div>
         <div className="p-3"></div>
         {posts?.map((post) => (
@@ -56,7 +56,9 @@ export default function MyPosts({ sessionData }: { sessionData: Session }) {
           </>
         ))}
         {posts?.length === 0 && (
-          <div className="text-2xl text-white">You don't have any posts</div>
+          <div className="text-2xl text-white">
+            You don&apos;t have any posts
+          </div>
         )}
       </main>
     </>
