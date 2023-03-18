@@ -29,7 +29,7 @@ export default function MyPosts({ sessionData }: { sessionData: Session }) {
   return (
     <>
       <Head>
-        <title>{sessionData.user.name}'s posts</title>
+        <title>{sessionData.user.name}&apos;s posts</title>
       </Head>
       <main className="min-h-screen bg-gray-800 text-white">
         <Link href={"/"}>Home</Link>
