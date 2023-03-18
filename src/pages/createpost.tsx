@@ -55,9 +55,7 @@ const CreatePost = ({
 }) => {
   const [input, setInput] = useState<Input>({ ...initialInput });
   const { mutate: createPost } = api.post.addPost.useMutation({
-    onSuccess: async () => {
-      await refetch();
-    },
+    onSuccess: () => void refetch(),
   });
   // const { data: tags } = api.tag.getAll.useQuery();
   const { refetch } = api.post.getAll.useQuery();
