@@ -17,6 +17,9 @@ export const postRouter = createTRPCRouter({
           },
         },
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     })
   ),
   getOneById: publicProcedure.input(z.string()).query(({ ctx, input }) =>
@@ -45,6 +48,7 @@ export const postRouter = createTRPCRouter({
         content: z.string(),
         title: z.string(),
         tags: z.array(z.string()),
+        summary: z.string(),
       })
     )
     .mutation(({ ctx, input }) => {
@@ -59,6 +63,7 @@ export const postRouter = createTRPCRouter({
           content: input.content,
           title: input.title,
           userId,
+          summary: input.summary,
           tags: {
             connect: _tags,
           },

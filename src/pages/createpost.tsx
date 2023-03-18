@@ -5,21 +5,24 @@ import { api } from "~/utils/api";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { getServerAuthSession } from "~/server/auth";
 import { Session } from "next-auth";
+import { prisma } from "~/server/db";
 
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
   const session = await getServerAuthSession(context);
+  const tags = await prisma.tag.findMany();
   if (!session)
     return {
       props: {},
       redirect: {
-        destination: "/",
+        destination: "/api/auth/signin",
       },
     };
   return {
     props: {
       sessionData: session,
+      tags,
     },
   };
 };
@@ -28,18 +31,36 @@ type Input = {
   title: string;
   content: string;
   tags: string[];
+  summary: string;
+};
+
+type Tag = {
+  id: string;
+  title: string;
 };
 
 const initialInput = {
   title: "",
   content: "",
   tags: [],
+  summary: "",
 };
 
-const CreatePost = ({ sessionData }: { sessionData: Session }) => {
+const CreatePost = ({
+  sessionData,
+  tags,
+}: {
+  sessionData: Session;
+  tags: Tag[];
+}) => {
   const [input, setInput] = useState<Input>({ ...initialInput });
-  const { mutate: createPost } = api.post.addPost.useMutation();
-  const { data: tags } = api.tag.getAll.useQuery();
+  const { mutate: createPost } = api.post.addPost.useMutation({
+    onSuccess: () => {
+      refetch();
+    },
+  });
+  // const { data: tags } = api.tag.getAll.useQuery();
+  const { refetch } = api.post.getAll.useQuery();
   const handleTagsChanges = (tagId: string) => {
     const { tags } = input;
     if (tags.includes(tagId))
@@ -51,22 +72,27 @@ const CreatePost = ({ sessionData }: { sessionData: Session }) => {
       <Head>
         <title>Create your post</title>
       </Head>
-      <main className="min-h-screen">
+      <main className="min-h-screen bg-gray-800 text-white">
         <Link href="/">To home page</Link>
         <p>Hello {sessionData?.user.name}</p>
         <p>Post title</p>
-        <input
-          type="text"
+        <textarea
           value={input.title}
           onChange={(e) => setInput({ ...input, title: e.target.value })}
-          className="border border-black"
+          className="h-12 w-1/2 border border-black text-black"
         />
         <p>Post content</p>
-        <input
-          type="text"
+        <textarea
           value={input.content}
           onChange={(e) => setInput({ ...input, content: e.target.value })}
-          className="border border-black"
+          className="h-12 w-1/2 border border-black text-black"
+        />
+        <br />
+        <p>Post summary</p>
+        <textarea
+          value={input.summary}
+          onChange={(e) => setInput({ ...input, summary: e.target.value })}
+          className="h-12 w-1/2 border border-black text-black"
         />
         <br />
         {tags &&
@@ -85,11 +111,10 @@ const CreatePost = ({ sessionData }: { sessionData: Session }) => {
             createPost(input);
             setInput({ ...initialInput });
           }}
+          className="rounded-lg border border-green-500 bg-green-500 p-1 hover:text-gray-300"
         >
           Create post
         </button>
-        <br />
-        <button onClick={() => console.log(input)}>Show</button>
       </main>
     </>
   );
