@@ -21,7 +21,7 @@ const Home: NextPage = () => {
             <Link href={"/"} className="pr-5 hover:text-gray-300">
               Home
             </Link>
-            <Link href={"/createpost"} className=" hover:text-gray-300">
+            <Link href={"/create-post"} className=" hover:text-gray-300">
               Create a post
             </Link>
           </div>
@@ -56,6 +56,7 @@ const User = () => {
       {toggleInfo && (
         <div className="absolute top-full right-0 mt-1 flex w-32 flex-col items-center rounded-lg bg-gray-500">
           <span>Hello, {sessionData?.user.name}</span>
+          <Link href={"/my-posts"}>My posts</Link>
           <button onClick={() => void signOut()}>Sign out</button>
         </div>
       )}
@@ -71,33 +72,35 @@ const Posts = () => {
       {posts?.map((post) => (
         <div
           key={post.id}
-          className="m-3 basis-1/3 rounded-2xl border border-white p-3"
+          className="m-3 flex basis-1/3 flex-col rounded-2xl border border-white p-3"
         >
           <div className="flex gap-5 ">
             {post.tags.map((tag) => (
               <div
                 key={Math.random()}
-                className="rounded-lg border border-green-400 p-1"
+                className="rounded-lg border border-green-400 p-1 font-semibold"
               >
                 {tag.title}
               </div>
             ))}
           </div>
           <Link
-            className="cursor-pointer text-2xl text-green-500"
+            className="block cursor-pointer py-2 text-2xl font-extrabold text-green-500"
             href={`/post/${post.id}`}
           >
             {post.title}
           </Link>
-          <div className="italic ">{post.summary}</div>
-          <div className="flex items-center gap-2">
-            <img
-              src={post.user.image ?? ""}
-              alt=""
-              className="w-20 rounded-full"
-            />
-            <span>{post.user.name}</span>
-            {dayjs(post.createdAt).fromNow()}
+          <p className="pb-5 italic">{post.summary}</p>
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-5">
+              <img
+                src={post.user.image ?? ""}
+                alt=""
+                className="w-20 rounded-full"
+              />
+              <span className="font-bold">{post.user.name}</span>
+            </div>
+            <span className="italic">{dayjs(post.createdAt).fromNow()}</span>
           </div>
         </div>
       ))}

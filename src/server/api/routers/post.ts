@@ -22,7 +22,7 @@ export const postRouter = createTRPCRouter({
       },
     })
   ),
-  getOneById: publicProcedure.input(z.string()).query(({ ctx, input }) =>
+  ById: publicProcedure.input(z.string()).query(({ ctx, input }) =>
     ctx.prisma.post.findUnique({
       where: {
         id: input,
@@ -39,6 +39,13 @@ export const postRouter = createTRPCRouter({
             title: true,
           },
         },
+      },
+    })
+  ),
+  ByAuthorId: protectedProcedure.query(({ ctx }) =>
+    ctx.prisma.post.findMany({
+      where: {
+        userId: ctx.session.user.id,
       },
     })
   ),
