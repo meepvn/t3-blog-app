@@ -1,5 +1,6 @@
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
 import { z } from "zod";
+import { TRPCError } from "@trpc/server";
 
 export const postRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) =>
@@ -74,6 +75,28 @@ export const postRouter = createTRPCRouter({
           tags: {
             connect: _tags,
           },
+        },
+      });
+    }),
+  delete: protectedProcedure
+    .input(z.string())
+    .mutation(async ({ ctx, input }) => {
+      const selectedPost = await ctx.prisma.post.findUnique({
+        where: {
+          id: input,
+        },
+      });
+      if (!selectedPost)
+        return new TRPCError({
+          code: "NOT_FOUND",
+        });
+      if (selectedPost.userId !== ctx.session.user.id)
+        return new TRPCError({
+          code: "UNAUTHORIZED",
+        });
+      return ctx.prisma.post.delete({
+        where: {
+          id: input,
         },
       });
     }),

@@ -25,7 +25,6 @@ export const getServerSideProps: GetServerSideProps = async (
 
 export default function MyPosts({ sessionData }: { sessionData: Session }) {
   const { data: posts } = api.post.ByAuthorId.useQuery();
-
   return (
     <>
       <Head>
@@ -47,7 +46,7 @@ export default function MyPosts({ sessionData }: { sessionData: Session }) {
           <>
             <div
               key={post.id}
-              className="w-2/3 rounded-2xl border border-green-500"
+              className="relative w-2/3 rounded-2xl border border-green-500"
             >
               <p className="p-2 text-3xl font-bold">{post.title}</p>
               <p className="p-2 italic">{post.summary}</p>
