@@ -57,8 +57,8 @@ const User = () => {
         <div className="absolute top-full right-0 mt-1 flex w-32 flex-col items-center rounded-lg bg-gray-500">
           <span>Hello, {sessionData?.user.name}</span>
           <button
-            onClick={() => {
-              signOut();
+            onClick={async () => {
+              await signOut();
             }}
           >
             Sign out
