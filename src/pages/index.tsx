@@ -56,7 +56,13 @@ const User = () => {
       {toggleInfo && (
         <div className="absolute top-full right-0 mt-1 flex w-32 flex-col items-center rounded-lg bg-gray-500">
           <span>Hello, {sessionData?.user.name}</span>
-          <button onClick={() => signOut()}>Sign out</button>
+          <button
+            onClick={() => {
+              signOut();
+            }}
+          >
+            Sign out
+          </button>
         </div>
       )}
     </div>

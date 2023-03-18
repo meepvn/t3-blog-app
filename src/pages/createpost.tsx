@@ -2,9 +2,9 @@ import Head from "next/head";
 import Link from "next/link";
 import { useState } from "react";
 import { api } from "~/utils/api";
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { type GetServerSideProps, GetServerSidePropsContext } from "next";
 import { getServerAuthSession } from "~/server/auth";
-import { Session } from "next-auth";
+import { type Session } from "next-auth";
 import { prisma } from "~/server/db";
 
 export const getServerSideProps: GetServerSideProps = async (
@@ -55,8 +55,8 @@ const CreatePost = ({
 }) => {
   const [input, setInput] = useState<Input>({ ...initialInput });
   const { mutate: createPost } = api.post.addPost.useMutation({
-    onSuccess: () => {
-      refetch();
+    onSuccess: async () => {
+      await refetch();
     },
   });
   // const { data: tags } = api.tag.getAll.useQuery();
