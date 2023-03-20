@@ -1,3 +1,39 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+h1{
+    @apply text-black text-3xl font-extrabold
+}
+
+h2{
+    @apply text-black text-2xl font-extrabold text-inherit
+}
+
+pre {
+    @apply bg-black text-white py-3 px-4
+}
+
+pre code {
+    @apply text-inherit p-0 bg-none
+}
+
+ul li {
+    @apply list-disc
+}
+
+ol li {
+    @apply list-decimal
+}
+
+.ProseMirror {
+    @apply outline-none
+}
+
+.ProseMirror ul,ol {
+    @apply px-4;
+}
+
+p{
+    @apply my-5
+}

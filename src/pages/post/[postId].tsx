@@ -14,6 +14,7 @@ export default function PostDetail() {
       <div className="min-h-screen bg-gray-800 text-white">Loading ...</div>
     );
   dayjs.extend(relativeTime);
+  if (!post) return null;
   return (
     <>
       <Head>
@@ -23,7 +24,10 @@ export default function PostDetail() {
         <Link href={"/"}>Home page</Link>
         <div className="m-auto flex w-1/2 flex-col items-center text-justify">
           <h1 className="p-3 text-4xl text-green-500">{post?.title}</h1>
-          <p className="text-2xl">{post?.content}</p>
+          <p
+            className="text-2xl"
+            dangerouslySetInnerHTML={{ __html: post?.content }}
+          ></p>
           <div className="self-end">
             <div className="flex items-center gap-5">
               <span className="text-bold">{post?.user.name}</span>

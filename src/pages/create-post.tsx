@@ -6,6 +6,7 @@ import { type GetServerSideProps, GetServerSidePropsContext } from "next";
 import { getServerAuthSession } from "~/server/auth";
 import { type Session } from "next-auth";
 import { prisma } from "~/server/db";
+import TipTapEditor from "~/components/TipTap";
 
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
@@ -65,24 +66,27 @@ const CreatePost = ({
       return setInput({ ...input, tags: tags.filter((tag) => tag !== tagId) });
     setInput({ ...input, tags: [...input.tags, tagId] });
   };
+  const handleRichTextChanges = (text: string) => {
+    setInput((prev) => ({ ...prev, content: text }));
+  };
   return (
     <>
       <Head>
         <title>Create your post</title>
       </Head>
-      <main className="min-h-screen bg-gray-800 text-white">
+      <main className="mx-auto flex min-h-screen flex-col items-center ">
         <Link href="/">To home page</Link>
-        <p>Hello {sessionData?.user.name}</p>
+        <div className="absolute top-4 right-4 self-end">
+          <img
+            src={sessionData.user.image ?? ""}
+            alt=""
+            className="w-24 rounded-full"
+          />
+        </div>
         <p>Post title</p>
         <textarea
           value={input.title}
           onChange={(e) => setInput({ ...input, title: e.target.value })}
-          className="h-12 w-1/2 border border-black text-black"
-        />
-        <p>Post content</p>
-        <textarea
-          value={input.content}
-          onChange={(e) => setInput({ ...input, content: e.target.value })}
           className="h-12 w-1/2 border border-black text-black"
         />
         <br />
@@ -93,6 +97,8 @@ const CreatePost = ({
           className="h-12 w-1/2 border border-black text-black"
         />
         <br />
+        <p>Post content</p>
+        <TipTapEditor setRichText={handleRichTextChanges} />
         {tags &&
           tags.map((tag) => (
             <div key={tag.id}>
