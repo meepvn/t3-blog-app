@@ -1,11 +1,10 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { signOut, useSession } from "next-auth/react";
 import { api } from "~/utils/api";
-import { useState } from "react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import User from "~/components/User";
 
 const Home: NextPage = () => {
   return (
@@ -39,41 +38,6 @@ const Home: NextPage = () => {
 
 export default Home;
 
-const User = () => {
-  const { data: sessionData, status } = useSession();
-  const [toggleInfo, setToggleInfo] = useState(false);
-  if (status === "loading") return null;
-  if (status === "unauthenticated")
-    return <Link href={"/api/auth/signin"}>Sign in</Link>;
-  return (
-    <div className="relative flex text-white">
-      <img
-        src={sessionData?.user.image ?? ""}
-        alt=""
-        className="w-12 cursor-pointer rounded-full"
-        onClick={() => setToggleInfo(!toggleInfo)}
-      />
-      {toggleInfo && (
-        <div className="absolute top-full right-0 mt-1 flex w-64 flex-col items-center rounded-lg bg-gray-500 text-xl">
-          <span>Hello, {sessionData?.user.name}</span>
-          <Link
-            href={"/my-posts"}
-            className="block w-full text-center hover:bg-green-500"
-          >
-            My posts
-          </Link>
-          <button
-            onClick={() => void signOut()}
-            className="block w-full hover:rounded-br-lg hover:rounded-bl-lg hover:bg-green-500"
-          >
-            Sign out
-          </button>
-        </div>
-      )}
-    </div>
-  );
-};
-
 const Posts = () => {
   const { data: posts } = api.post.getAll.useQuery();
   dayjs.extend(relativeTime);
@@ -82,7 +46,7 @@ const Posts = () => {
       {posts?.map((post) => (
         <div
           key={post.id}
-          className="m-3 flex flex-col rounded-2xl border border-white p-3 sm:basis-1/2 md:basis-1/2 lg:basis-1/3"
+          className="m-5 flex flex-col rounded-2xl border border-white p-3 sm:basis-1/2 md:basis-1/2 lg:basis-1/3"
         >
           <div className="flex gap-5 ">
             {post.tags.map((tag) => (
@@ -100,7 +64,9 @@ const Posts = () => {
           >
             {post.title}
           </Link>
-          <p className="pb-5 italic">{post.summary}</p>
+          <p className="italic">
+            <span>{post.summary}</span>
+          </p>
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-5">
               <img

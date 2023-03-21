@@ -21,7 +21,7 @@ export default function PostDetail() {
         <title>{post?.title}</title>
       </Head>
       <main className="min-h-screen bg-gray-800 text-white">
-        <Link href={"/"}>Home page</Link>
+        <Link href={"/"}>Home</Link>
         <div className="m-auto flex w-1/2 flex-col items-center text-justify">
           <h1 className="p-3 text-4xl text-green-500">{post?.title}</h1>
           <p

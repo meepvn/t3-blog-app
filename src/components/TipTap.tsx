@@ -16,7 +16,7 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
     return null;
   }
   return (
-    <div className="flex w-1/2 gap-2 rounded-t-xl border-2 border-black p-2">
+    <div className="flex w-1/2 gap-2 rounded-t-xl border-2 border-black bg-white p-2">
       <button
         onClick={() => editor?.chain().focus().toggleBold().run()}
         disabled={!editor?.can().chain().focus().toggleBold().run()}
@@ -114,9 +114,9 @@ const Tiptap = ({ setRichText }: { setRichText: (text: string) => void }) => {
     },
   });
   return (
-    <div className="flex w-full flex-col items-center justify-center pt-10">
+    <div className="flex w-full flex-col items-center justify-center text-black">
       <MenuBar editor={editor} />
-      <div className="w-1/2 border-2 border-t-0 border-black p-2">
+      <div className="w-1/2 rounded-b-xl border-2 border-t-0 border-black bg-white p-2 focus:outline-4 focus:outline-blue-200">
         <EditorContent editor={editor} className="p-2" />
       </div>
     </div>
