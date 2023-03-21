@@ -17,8 +17,8 @@
 - [x] Create API routes for posts (CRUD)
 - [x] Create API routes for tags (CRUD)
 - [x] Create post page (requires login) using post and tag API routes (no css yet)
-- [ ] Create the home page that shows all the posts
-- [ ] Create update post page
+- [x] Create the home page that shows all the posts
 - [x] Create detail page for each post (no css)
-- [ ] Create user page
 - [x] Create post management page
+- [ ] Create update post page
+- [ ] Create user page
