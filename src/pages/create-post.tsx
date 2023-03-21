@@ -2,7 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useState } from "react";
 import { api } from "~/utils/api";
-import { type GetServerSideProps, GetServerSidePropsContext } from "next";
+import { type GetServerSideProps, type GetServerSidePropsContext } from "next";
 import { getServerAuthSession } from "~/server/auth";
 import { type Session } from "next-auth";
 import { prisma } from "~/server/db";
@@ -70,12 +70,12 @@ const CreatePost = ({
   const handleRichTextChanges = (text: string) => {
     setInput((prev) => ({ ...prev, content: text }));
   };
-  const handleCreatePost = () => {
+  const handleCreatePost = async () => {
     try {
       const parsed = postInputValidator.parse(input);
       createPost(parsed);
       toast.success("Successfully created");
-      router.push("/");
+      await router.push("/");
     } catch (err) {
       if (err instanceof ZodError) {
         err.errors.forEach((_err) => void toast.error(_err.message));
