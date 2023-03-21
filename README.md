@@ -1,4 +1,5 @@
-# Im learning T3 stack by creating a blog app with it
+# Working in progress
+## Im learning T3 stack by creating a blog app with it
 
 ## Technologies
 
@@ -10,11 +11,8 @@
 - PostgreSQL
 
 ## Todos
-<<<<<<< HEAD
 - [x] Setup OAuth2 (google,discord) so users can sign in. 
-=======
 
->>>>>>> 857979cc5f52af22943ac68f0bfcdb1cd6d2aeb5
 - [x] Make a prisma schema and push it to db(supabase)
 - [x] Create API routes for posts (CRUD)
 - [x] Create API routes for tags (CRUD)
@@ -23,8 +21,4 @@
 - [ ] Create update post page
 - [x] Create detail page for each post (no css)
 - [ ] Create user page
-<<<<<<< HEAD
-- [ ] Create post management page
-=======
-- [ ] Create post management page
->>>>>>> 857979cc5f52af22943ac68f0bfcdb1cd6d2aeb5
+- [x] Create post management page
