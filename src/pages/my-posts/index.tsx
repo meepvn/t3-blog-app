@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
-import { type GetServerSideProps, GetServerSidePropsContext } from "next";
+import type { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { getServerAuthSession } from "~/server/auth";
 import { type Session } from "next-auth";
 import { api } from "~/utils/api";
