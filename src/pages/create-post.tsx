@@ -56,10 +56,11 @@ const CreatePost = ({
 }) => {
   const [input, setInput] = useState<Input>({ ...initialInput });
   const { mutate: createPost } = api.post.addPost.useMutation({
-    onSuccess: () => void refetch(),
+    onSuccess: () => {
+      const utils = api.useContext();
+      void utils.post.getAll.invalidate();
+    },
   });
-  // const { data: tags } = api.tag.getAll.useQuery();
-  const { refetch } = api.post.getAll.useQuery();
   const router = useRouter();
   const handleTagsChanges = (tagId: string) => {
     const { tags } = input;
@@ -70,12 +71,12 @@ const CreatePost = ({
   const handleRichTextChanges = (text: string) => {
     setInput((prev) => ({ ...prev, content: text }));
   };
-  const handleCreatePost = async () => {
+  const handleCreatePost = () => {
     try {
       const parsed = postInputValidator.parse(input);
       createPost(parsed);
       toast.success("Successfully created");
-      await router.push("/");
+      void router.push("/");
     } catch (err) {
       if (err instanceof ZodError) {
         err.errors.forEach((_err) => void toast.error(_err.message));
