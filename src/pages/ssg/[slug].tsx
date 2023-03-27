@@ -1,7 +1,6 @@
 import { appRouter } from "~/server/api/root";
 import { prisma } from "~/server/db";
 import { createProxySSGHelpers } from "@trpc/react-query/ssg";
-import { getServerSession } from "next-auth";
 import superjson from "superjson";
 import { GetStaticPaths, GetStaticProps } from "next";
 
@@ -10,14 +9,11 @@ import { api } from "~/utils/api";
 import Link from "next/link";
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  //   const session = await getServerSession();
   const ssg = createProxySSGHelpers({
     router: appRouter,
-    //@ts-ignore
-    ctx: {},
+    ctx: { prisma, session: null },
     transformer: superjson,
   });
-
   const slug = context.params?.slug;
   if (typeof slug !== "string") throw new Error("No slug");
 
