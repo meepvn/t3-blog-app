@@ -12,11 +12,7 @@ export const postRouter = createTRPCRouter({
             image: true,
           },
         },
-        tags: {
-          select: {
-            title: true,
-          },
-        },
+        tags: {},
       },
       orderBy: {
         createdAt: "desc",
@@ -43,14 +39,52 @@ export const postRouter = createTRPCRouter({
       },
     })
   ),
-  ByAuthorId: protectedProcedure.query(({ ctx }) =>
+  byTag: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
+    const postsPromise = ctx.prisma.post.findMany({
+      where: {
+        tags: {
+          some: {
+            id: input,
+          },
+        },
+      },
+      include: {
+        user: {
+          select: {
+            name: true,
+            image: true,
+          },
+        },
+        tags: {},
+      },
+    });
+    const tagPromise = ctx.prisma.tag.findUnique({
+      where: {
+        id: input,
+      },
+      select: {
+        title: true,
+      },
+    });
+
+    const [posts, tag] = await Promise.all([postsPromise, tagPromise]);
+    if (!tag)
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+      });
+    return {
+      tag: tag.title,
+      posts,
+    };
+  }),
+  ByOwner: protectedProcedure.query(({ ctx }) =>
     ctx.prisma.post.findMany({
       where: {
         userId: ctx.session.user.id,
       },
     })
   ),
-  addPost: protectedProcedure
+  add: protectedProcedure
     .input(
       z.object({
         content: z.string(),

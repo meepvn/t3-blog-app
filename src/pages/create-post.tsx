@@ -55,7 +55,7 @@ const CreatePost = ({
   tags: Tag[];
 }) => {
   const [input, setInput] = useState<Input>({ ...initialInput });
-  const { mutate: createPost } = api.post.addPost.useMutation({
+  const { mutate: createPost } = api.post.add.useMutation({
     onSuccess: () => {
       const utils = api.useContext();
       void utils.post.getAll.invalidate();

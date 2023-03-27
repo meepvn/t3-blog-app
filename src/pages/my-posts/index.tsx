@@ -29,7 +29,7 @@ export const getServerSideProps: GetServerSideProps = async (
 };
 
 export default function MyPosts({ sessionData }: { sessionData: Session }) {
-  const { data: posts, refetch } = api.post.ByAuthorId.useQuery();
+  const { data: posts, refetch } = api.post.ByOwner.useQuery();
   const { mutate: deletePost } = api.post.delete.useMutation({
     onSuccess: () => void refetch(),
   });

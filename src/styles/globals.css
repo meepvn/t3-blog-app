@@ -2,27 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
-h1{
+body{
+    @apply min-h-screen;
+}
+
+
+.post-content h1{
     @apply text-black text-3xl font-extrabold
 }
 
-h2{
+.post-content h2{
     @apply text-black text-2xl font-extrabold text-inherit
 }
 
-pre {
+.post-content pre {
     @apply bg-black text-white py-3 px-4 rounded-lg
 }
 
-pre code {
+.post-content pre code {
     @apply text-inherit p-0 bg-none
 }
 
-ul li {
+.post-content ul li {
     @apply list-disc
 }
 
-ol li {
+.post-content ol li {
     @apply list-decimal
 }
 
@@ -35,6 +40,6 @@ ol li {
     @apply px-4;
 }
 
-p{
-    @apply my-5
+.post-content p{
+    @apply my-5;
 }
