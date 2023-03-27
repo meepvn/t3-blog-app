@@ -75,11 +75,18 @@ const CreatePost = ({
     try {
       const parsed = postInputValidator.parse(input);
       createPost(parsed);
-      toast.success("Successfully created");
+      toast.success("Successfully created", {
+        position: "bottom-right",
+      });
       void router.push("/");
     } catch (err) {
       if (err instanceof ZodError) {
-        err.errors.forEach((_err) => void toast.error(_err.message));
+        err.errors.forEach(
+          (_err) =>
+            void toast.error(_err.message, {
+              position: "bottom-right",
+            })
+        );
       }
     }
   };

@@ -50,6 +50,7 @@ export default function MyPosts({ sessionData }: { sessionData: Session }) {
               setDeleting(false);
               toast.success("Successfully deleted", {
                 autoClose: 1000,
+                position: "bottom-right",
               });
             }}
           />
