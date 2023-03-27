@@ -1,19 +1,38 @@
 import Head from "next/head";
 import Link from "next/link";
 import { api } from "~/utils/api";
-import { useRouter } from "next/router";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { ssg } from "~/server/helpers/ssg";
+import type { GetStaticPaths, GetStaticProps } from "next";
 
-export default function PostDetail() {
-  const router = useRouter();
-  const id = router.query.postId as string;
-  const { data: post, status } = api.post.ById.useQuery(id);
+export const getStaticProps: GetStaticProps = async (context) => {
+  const slug = context.params?.slug;
+  if (typeof slug !== "string") throw new Error("No slug");
+  await ssg.post.ById.prefetch(slug);
+  return {
+    props: {
+      trpcState: ssg.dehydrate(),
+      slug,
+    },
+  };
+};
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return {
+    paths: [],
+    fallback: "blocking",
+  };
+};
+
+dayjs.extend(relativeTime);
+
+export default function SinglePost({ slug }: { slug: string }) {
+  const { data: post, status } = api.post.ById.useQuery(slug);
   if (status !== "success")
     return (
       <div className="min-h-screen bg-gray-800 text-white">Loading ...</div>
     );
-  dayjs.extend(relativeTime);
   if (!post) return null;
   return (
     <>
@@ -25,7 +44,7 @@ export default function PostDetail() {
         <div className="m-auto flex w-1/2 flex-col items-center text-justify">
           <h1 className="p-3 text-4xl text-green-500">{post?.title}</h1>
           <p
-            className="text-2xl"
+            className="post-content text-2xl"
             dangerouslySetInnerHTML={{ __html: post?.content }}
           ></p>
           <div className="self-end">

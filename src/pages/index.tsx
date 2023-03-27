@@ -25,9 +25,6 @@ const Home: NextPage = () => {
             <Link href={"/create-post"} className="hover:text-gray-300">
               Create a post
             </Link>
-            <Link href={"/random"} className="hover:text-gray-300">
-              Random
-            </Link>
           </div>
           <div>
             <User />
@@ -67,12 +64,6 @@ const Posts = () => {
             href={`/post/${post.id}`}
           >
             {post.title}
-          </Link>
-          <Link
-            className="block cursor-pointer py-2 text-2xl font-extrabold text-green-500"
-            href={`/ssg/${post.id}`}
-          >
-            SSG
           </Link>
           <p className="italic">
             <span>{post.summary}</span>
